@@ -21,6 +21,7 @@ slist_init(slist_t *list)
 void
 slist_add(slist_t *list, slist_t *elm)
 {
+    // Secure with a lock
     elm->next = list->next;
     list->next = elm;
     list->count++;
@@ -33,6 +34,7 @@ slist_remove(slist_t *list, slist_t *elm)
     slist_t *elm_list = list;
     slist_t *prev = NULL;
 
+    // Need to lock from here
     for (elm_list; elm_list != NULL; elm_list = elm_list->next) {
 
       debug_print("%s: elmlist: %p, elm: %p\n", __FUNCTION__, elm_list, elm);
