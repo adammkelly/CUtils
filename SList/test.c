@@ -9,6 +9,19 @@ typedef struct test_slist {
 
 slist_t list;
 slist_t list2;
+test_t search;
+
+int
+search_compare(slist_t *elm1, slist_t *elm2)
+{
+    test_t *test1 = NULL,
+           *test2 = NULL;
+
+    test1 = (test_t *)elm1;
+    test2 = (test_t *)elm2;
+
+    return (test1->data == test2->data);
+}
 
 int main(int argc, char const *argv[]) {
 
@@ -40,6 +53,11 @@ int main(int argc, char const *argv[]) {
     data3->data = 3;
     slist_add(&list, &data3->list_ptr);
   }
+
+  search.data = 1;
+  slist_t *found_ptr = slist_find(&list, &search.list_ptr, search_compare);
+
+  printf("Found ptr element: %p\n", found_ptr);
 
   /* Add to list2 */
   data4 = malloc(sizeof (*data4));

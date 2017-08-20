@@ -2,7 +2,7 @@
 #include "slist_priv.h"
 
 /*
- * slist.c
+ * slist.c - Caller is responsible for thread safety/locking.
  *
  * Singly Linked List Implementation by Adam Kelly
  * Copyright (c) 2017 - All rights reserved.
@@ -15,7 +15,6 @@ slist_init(slist_t *list)
 {
   list->next = NULL;
   list->count = 0;
-  // Decide on locking later
   debug_print("List init done %p, next: %p!\n", list, list->next);
 }
 
@@ -45,6 +44,25 @@ slist_remove(slist_t *list, slist_t *elm)
       }
       prev = elm_list;
     }
+}
+
+slist_t*
+slist_find(slist_t *list, slist_t *search_elm, slist_cb_t *compare)
+{
+    slist_t *elm_list = list;
+    slist_t *found = NULL;
+
+    for (elm_list; elm_list != NULL; elm_list = elm_list->next) {
+
+        debug_print("%s - Searching list - %p\n", __FUNCTION__, elm_list);
+
+        if (compare(search_elm, elm_list)) {
+            found = elm_list;
+            break;
+        }
+    }
+
+    return (found);
 }
 
 void
